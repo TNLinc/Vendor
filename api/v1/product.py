@@ -1,7 +1,13 @@
 import uuid
-from typing import List, Optional
+from typing import Any
+from typing import Optional
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends
+from fastapi import HTTPException
+from fastapi.params import Query
+from fastapi_pagination import LimitOffsetPage
+from fastapi_pagination import Page
+from fastapi_pagination import paginate
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from pydantic.color import Color
@@ -10,7 +16,9 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from db import get_db
-from models import Product, ProductRead, ProductWithVendor
+from models import Product
+from models import ProductRead
+from models import ProductWithVendor
 
 router = InferringRouter()
 
@@ -20,19 +28,30 @@ class ProductAPI:
     session: AsyncSession = Depends(get_db)
 
     @router.get("/products/{item_id}")
-    async def get_vendor(self, item_id: uuid.UUID) -> ProductWithVendor:
-        product = await self.session.get(
-            Product, item_id, options=[joinedload(Product.vendor)]
-        )
-        if not product:
+    async def get_product(self, item_id: uuid.UUID) -> ProductWithVendor:
+        product_with_vendor = await self.session.get(
+            ProductWithVendor, item_id, options=[joinedload(Product.vendor)])
+        if not product_with_vendor:
             raise HTTPException(status_code=404, detail="Vendor not found")
-        return product
+        return product_with_vendor
 
-    @router.get("/products")
-    async def get_all_vendors(self, color: Optional[Color] = None) -> List[ProductRead]:
-        stmt = select(Product)
-        if color:
-            print(color)
-            stmt = stmt.filter_by(color=color.as_hex())
-        result = await self.session.execute(stmt)
-        return result.scalars().all()
+    @router.get(
+        "/products/default/",
+        response_model=Page[ProductRead],
+        summary="Get products with pagination",
+    )
+    @router.get(
+        "/products/limit-offset/",
+        response_model=LimitOffsetPage[ProductRead],
+        summary="Get products with limit and offset",
+    )
+    async def get_all_products(
+        self,
+        color: Optional[Color] = Query(default=None,
+                                       description="Sorted color")
+    ) -> Any:
+        products = await self.session.execute(select(Product))
+        products = products.scalars().all()
+        if not color:
+            return paginate(products)
+        return paginate(sorted(products, key=lambda x: x.get_distance(color)))
