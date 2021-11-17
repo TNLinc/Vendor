@@ -48,7 +48,7 @@ class ProductBase(SQLModel):
     name: str
     type: ProductType = Field(sa_column=sa.Column(
         ChoiceType(ProductType, impl=sa.String())),
-                              nullable=False)
+        nullable=False)
     color: Color
     vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
 
