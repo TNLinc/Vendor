@@ -51,5 +51,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: cv_flake8_report
+          name: flake8_report
           path: flake-report

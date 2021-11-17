@@ -52,5 +52,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: cv_pylint_report
+          name: pylint_report
           path: pylint_reports

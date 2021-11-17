@@ -31,5 +31,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: cv_bandit_report
+          name: bandit_report
           path: bandit-report

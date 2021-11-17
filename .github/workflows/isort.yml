@@ -37,7 +37,7 @@ jobs:
       #----------------------------------------------
       # analise code
       #----------------------------------------------
-      - name: Analysing the vendor service code with isort
+      - name: Analysing with isort
         run: |
           source .venv/bin/activate
           isort .
