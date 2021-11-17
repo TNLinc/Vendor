@@ -1,16 +1,13 @@
 import uuid
 from enum import Enum
-from typing import List
-from typing import Optional
+from typing import List, Optional
 
 import numpy as np
 import sqlalchemy as sa
 from PIL import ImageColor
 from pydantic.color import Color
 from sqlalchemy_utils import ChoiceType
-from sqlmodel import Field
-from sqlmodel import Relationship
-from sqlmodel import SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from core import settings
 
