@@ -58,3 +58,6 @@ max-line-length = 120
 format = "html"
 htmldir = "flake-report"
 exclude = ".venv"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
