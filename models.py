@@ -1,13 +1,16 @@
 import uuid
 from enum import Enum
-from typing import List, Optional
+from typing import List
+from typing import Optional
 
 import numpy as np
 import sqlalchemy as sa
 from PIL import ImageColor
 from pydantic.color import Color
 from sqlalchemy_utils import ChoiceType
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field
+from sqlmodel import Relationship
+from sqlmodel import SQLModel
 
 from core import settings
 
@@ -43,9 +46,9 @@ class ProductType(Enum):
 
 class ProductBase(SQLModel):
     name: str
-    type: ProductType = Field(
-        sa_column=sa.Column(ChoiceType(ProductType, impl=sa.String())), nullable=False
-    )
+    type: ProductType = Field(sa_column=sa.Column(
+        ChoiceType(ProductType, impl=sa.String())),
+                              nullable=False)
     color: Color
     vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
 
@@ -60,7 +63,8 @@ class Product(ProductBase, table=True):
         target_color = np.array(target_color.as_rgb_tuple())
         product_color = np.array(ImageColor.getrgb(self.color))
         rm = 0.5 * (target_color[0] + product_color[0])
-        return sum((2 + rm, 4, 3 - rm) * (target_color - product_color) ** 2) ** 0.5
+        return sum(
+            (2 + rm, 4, 3 - rm) * (target_color - product_color)**2)**0.5
 
     class Config:
         schema_extra = {
