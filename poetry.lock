@@ -50,10 +50,7 @@ pathspec = ">=0.9.0,<1"
 platformdirs = ">=2"
 regex = ">=2020.1.8"
 tomli = ">=0.2.6,<2.0.0"
-typing-extensions = [
-    {version = ">=3.10.0.0", markers = "python_version < \"3.10\""},
-    {version = "!=3.10.0.1", markers = "python_version >= \"3.10\""},
-]
+typing-extensions = ">=3.10.0.0"
 
 [package.extras]
 colorama = ["colorama (>=0.4.3)"]
@@ -613,8 +610,8 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
-content-hash = "5c9daa0af92a90c7f886327cf53b4cf6aef74dc0c55f7374bb46f81039b0a4be"
+python-versions = "3.9.8"
+content-hash = "f945c4bda189e248f8803c6e9cc2b12aabec60798f34e63bdc6e936b96938113"
 
 [metadata.files]
 asgiref = [
