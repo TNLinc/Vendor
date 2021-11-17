@@ -8,7 +8,7 @@ authors = ["ilyakochankov <ilyakochankov@yandex.ru>"]
 python = "3.9.8"
 fastapi = "^0.68.1"
 uvicorn = "^0.15.0"
-sqlmodel = "^0.0.4"
+sqlmodel = "0.0.4"
 SQLAlchemy-Utils = "^0.37.8"
 environs = "^9.3.3"
 asyncpg = "^0.24.0"
@@ -17,6 +17,8 @@ fastapi-utils = "^0.2.1"
 orjson = "^3.6.3"
 email-validator = "^1.1.3"
 fastapi-health = "^0.4.0"
+Pillow = "^8.4.0"
+fastapi-pagination = "^0.9.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.11.1"
@@ -34,7 +36,7 @@ build-backend = "poetry.core.masonry.api"
 based_on_style = "pep8"
 
 [tool.pylint.'MASTER']
-ignore=".venv, Dockerfile, README.md, poetry.lock, pyproject.toml"
+ignore=".venv, Dockerfile, Procfile, README.md, poetry.lock, pyproject.toml"
 
 [tool.pylint.'REPORTS']
 output-format="json"
