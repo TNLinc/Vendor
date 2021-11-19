@@ -1,15 +1,19 @@
 import logging
 
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 from fastapi_health import health
+from fastapi_pagination import add_pagination
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 import db
-from api.v1 import product, vendor
-from core import loger, settings
+from api.v1 import product
+from api.v1 import vendor
+from core import loger
+from core import settings
 from core.settings import VENDOR_ALLOWED_HOSTS
 
 description = """
@@ -85,9 +89,9 @@ app.include_router(vendor.router, prefix="/api/vendor/v1", tags=["vendors"])
 app.include_router(product.router, prefix="/api/vendor/v1", tags=["products"])
 app.add_api_route("/health", health([is_database_online]))
 
-app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=VENDOR_ALLOWED_HOSTS
-)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=VENDOR_ALLOWED_HOSTS)
+
+add_pagination(app)
 
 if __name__ == "__main__":
     uvicorn.run(
