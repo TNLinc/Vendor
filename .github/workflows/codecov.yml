@@ -44,7 +44,7 @@ jobs:
 
       - name: Run prebuild scripts
         run: |
-          bash test/scripts/test-entrypoin.sh
+          bash tests/scripts/test-entrypoin.sh
 
       - name: Run tests and collect coverage
         run: |
