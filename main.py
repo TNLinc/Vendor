@@ -1,20 +1,17 @@
 import logging
 
-import uvicorn
-from fastapi import Depends
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 from fastapi_health import health
 from fastapi_pagination import add_pagination
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+import uvicorn
 
-import db
-from api.v1 import product
-from api.v1 import vendor
-from core import loger
-from core import settings
+from api.v1 import product, vendor
+from core import loger, settings
 from core.settings import VENDOR_ALLOWED_HOSTS
+import db
 
 description = """
 Vendor API helps you do awesome stuff. 🚀

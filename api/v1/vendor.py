@@ -1,5 +1,5 @@
-import uuid
 from typing import List
+import uuid
 
 from fastapi import Depends, HTTPException
 from fastapi_utils.cbv import cbv
@@ -18,8 +18,8 @@ router = InferringRouter()
 class VendorAPI:
     session: AsyncSession = Depends(get_db)
 
-    @router.get("/vendors/{item_id}")
-    async def get_vendor(self, item_id: uuid.UUID) -> VendorWithProducts:
+    @router.get("/vendors/{item_id}", response_model=VendorWithProducts)
+    async def get_vendor(self, item_id: uuid.UUID):
         vendor = await self.session.get(
             Vendor, item_id, options=[joinedload(Vendor.products)]
         )
