@@ -44,8 +44,7 @@ class ProductType(enum.Enum):
 
 class ProductBase(SQLModel):
     name: str
-    type: ProductType = Field(sa_column=sa.Column(
-        Enum(ProductType)), nullable=False)
+    type: ProductType = Field(sa_column=sa.Column(Enum(ProductType)), nullable=False)
     color: str = Field(nullable=False)
 
     @validator("color")
