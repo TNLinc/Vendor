@@ -14,7 +14,7 @@ BASE_DIR="$( cd -P "$( dirname "$DIR" )" >/dev/null 2>&1 && pwd )"
 # Load .env.test
 echo "Load .env.test"
 set -a
-source $BASE_DIR/tests/.env.test
+source "$BASE_DIR"/tests/.env.test
 set +a
 
 # Start DB
