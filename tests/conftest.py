@@ -1,7 +1,7 @@
 import json
 
-import pytest
 from httpx import AsyncClient
+import pytest
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
 
