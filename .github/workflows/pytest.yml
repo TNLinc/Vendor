@@ -10,10 +10,6 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      CV_SECRET_KEY: some-secret-string
-      CV_DEBUG: TRUE
-      CV_ALLOWED_HOSTS: '*'
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -47,4 +43,4 @@ jobs:
 
       - name: Run prebuild scripts
         run: |
-          bash tests/scripts/fastApi-test.sh
+          bash scripts/fastApi-test.sh
