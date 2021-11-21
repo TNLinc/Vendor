@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy import Enum
 from sqlmodel import Field, Relationship, SQLModel
 
-from core import settings
+from core.config import settings
 
 
 class VendorBase(SQLModel):
@@ -22,7 +22,7 @@ class Vendor(VendorBase, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
     products: List["Product"] = Relationship(back_populates="vendor")
 
-    __table_args__ = {"schema": settings.VENDOR_DB_SCHEMA}
+    __table_args__ = {"schema": settings.DB_SCHEMA}
 
     class Config:
         schema_extra = {
@@ -58,7 +58,7 @@ class Product(ProductBase, table=True):
     vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
     vendor: Vendor = Relationship(back_populates="products")
 
-    __table_args__ = {"schema": settings.VENDOR_DB_SCHEMA}
+    __table_args__ = {"schema": settings.DB_SCHEMA}
 
     def get_distance(self, target_color: Color):
         target_color = np.array(target_color.as_rgb_tuple())

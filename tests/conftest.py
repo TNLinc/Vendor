@@ -1,29 +1,20 @@
 import json
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio import AsyncSession
 
 import db
 from main import app
 from models import Product, Vendor
-from tests import settings
 from tests.data import products, vendors
 
 
 @pytest.fixture
 async def client():
-    async with AsyncClient(app=app, base_url="http://") as ac:
+    async with AsyncClient(app=app, base_url="http://", headers={'host': 'localhost'}) as ac:
         yield ac
-
-
-@pytest.fixture
-async def init_sqlalchemy_engine():
-    await db.start_db(settings.TEST_DB_URL)
-    yield
-    await db.close_db()
 
 
 @pytest.fixture
@@ -34,37 +25,48 @@ def jsonify():
     return inner
 
 
-@pytest.fixture
-async def fill_vendor_data(init_sqlalchemy_engine):
-    async with AsyncSession(db.engine) as session:
-        for vendor in vendors:
-            session.add(Vendor(**vendor))
-        try:
-            await session.commit()
-        except IntegrityError:
-            print("Data already exists! Pass creation.")
-
-    yield
-
-    async with AsyncSession(db.engine) as session:
-        statement = delete(Vendor)
-        await session.execute(statement)
-        await session.commit()
+@pytest.fixture()
+async def session():
+    session_generator = db.create_session()
+    new_session = await session_generator.__anext__()
+    yield new_session
+    try:
+        await session_generator.__anext__()
+    except StopAsyncIteration:
+        ...
+    finally:
+        await db.engine.dispose()
 
 
 @pytest.fixture
-async def fill_product_data(fill_vendor_data):
-    async with AsyncSession(db.engine) as session:
-        for product in products:
-            session.add(Product(**product))
-        try:
-            await session.commit()
-        except IntegrityError:
-            print("Data already exists! Pass creation.")
+async def fill_vendor_data(session):
+    for vendor in vendors:
+        session.add(Vendor(**vendor))
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        print("Data already exists! Pass creation.")
 
     yield
 
-    async with AsyncSession(db.engine) as session:
-        statement = delete(Product)
-        await session.execute(statement)
+    statement = delete(Vendor)
+    await session.execute(statement)
+    await session.commit()
+
+
+@pytest.fixture
+async def fill_product_data(fill_vendor_data, session):
+    for product in products:
+        session.add(Product(**product))
+    try:
         await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        print("Data already exists! Pass creation.")
+
+    yield
+
+    statement = delete(Product)
+    await session.execute(statement)
+    await session.commit()

@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
-from db import get_db
+from db import SessionBuilder, create_session
 from models import Vendor, VendorRead, VendorWithProducts
 
 router = InferringRouter()
@@ -16,7 +16,7 @@ router = InferringRouter()
 
 @cbv(router)
 class VendorAPI:
-    session: AsyncSession = Depends(get_db)
+    session: AsyncSession = Depends(create_session)
 
     @router.get("/vendors/{item_id}", response_model=VendorWithProducts)
     async def get_vendor(self, item_id: uuid.UUID):

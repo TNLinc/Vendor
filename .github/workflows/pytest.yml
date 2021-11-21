@@ -47,10 +47,4 @@ jobs:
 
       - name: Run prebuild scripts
         run: |
-          bash tests/scripts/test-entrypoint.sh
-
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest
-          deactivate
+          bash tests/scripts/fastApi-test.sh

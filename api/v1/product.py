@@ -1,5 +1,5 @@
-from typing import Any, Optional
 import uuid
+from typing import Any, Optional
 
 from fastapi import Depends, HTTPException
 from fastapi.params import Query
@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
-from db import get_db
+from db import create_session
 from models import Product, ProductRead, ProductWithVendor
 
 router = InferringRouter()
@@ -19,7 +19,7 @@ router = InferringRouter()
 
 @cbv(router)
 class ProductAPI:
-    session: AsyncSession = Depends(get_db)
+    session: AsyncSession = Depends(create_session)
 
     @router.get("/products/{item_id}", response_model=ProductWithVendor)
     async def get_product(self, item_id: uuid.UUID):
@@ -41,7 +41,7 @@ class ProductAPI:
         summary="Get products with limit and offset",
     )
     async def get_all_products(
-        self, color: Optional[Color] = Query(default=None, description="Sorted color")
+            self, color: Optional[Color] = Query(default=None, description="Sorted color")
     ) -> Any:
         products = await self.session.execute(select(Product))
         products = products.scalars().all()
