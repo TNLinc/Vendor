@@ -1,0 +1,9 @@
+tests_pre_start.py
+tests
+.github
+.env
+.idea
+.pytest_cache
+poetry.lock
+docker-compose.yml
+README.md

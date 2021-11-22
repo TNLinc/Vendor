@@ -46,7 +46,7 @@ build-backend = "poetry.core.masonry.api"
 based_on_style = "pep8"
 
 [tool.pylint.MASTER]
-ignore = ".venv, Dockerfile, Procfile, README.md, poetry.lock, pyproject.toml"
+ignore = ".venv, Dockerfile, docker-compose, Procfile, README.md, poetry.lock, pyproject.toml"
 load-plugins = [
     "pylint_pytest",
     "pylint.extensions.code_style"
