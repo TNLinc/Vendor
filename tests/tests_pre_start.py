@@ -1,3 +1,5 @@
+from models import Vendor
+from db import SessionBuilder
 import asyncio
 import logging
 
@@ -9,8 +11,6 @@ from core.config import settings
 
 settings.setenv('testing')
 
-from db import SessionBuilder
-from models import Vendor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
