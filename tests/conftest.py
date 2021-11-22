@@ -1,6 +1,7 @@
 import json
 
 import pytest
+from dynaconf import settings
 from httpx import AsyncClient
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError

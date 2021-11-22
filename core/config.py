@@ -1,23 +1,18 @@
+from functools import lru_cache
 from pathlib import Path
-from typing import List
 
-from pydantic import BaseSettings, Field
+from dynaconf import Dynaconf, LazySettings
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-
-class Settings(BaseSettings):
-    PROJECT_NAME: str = "Vendor"
-
-    ALLOWED_HOSTS: List = Field(default=['*'])
-
-    DB_URL: str
-    DB_SCHEMA: str
-
-    class Config:
-        env_file = str(BASE_DIR / '.env')
-        env_prefix = 'VENDOR_'
-        case_sensitive = True
+settings: LazySettings = Dynaconf(
+    settings_files=[BASE_DIR / 'core/settings.yaml', BASE_DIR / 'core/.secrets.yaml'],
+    environments=True,
+    load_dotenv=True,
+    dotenv_path=BASE_DIR / '.env',
+)
 
 
-settings = Settings()
+@lru_cache
+def get_settings():
+    return settings

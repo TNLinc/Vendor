@@ -3,10 +3,12 @@ import logging
 
 import nest_asyncio
 from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
 
 from core.config import settings
+
+settings.setenv('testing')
+
 from db import SessionBuilder
 from models import Vendor
 
