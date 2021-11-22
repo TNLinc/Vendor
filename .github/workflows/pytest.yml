@@ -57,7 +57,7 @@ jobs:
           deactivate
 
       - name: Run tests
-        run: |
+      - run: |
           source .venv/bin/activate
           pytest
           deactivate
