@@ -47,8 +47,7 @@ class ProductType(enum.Enum):
 
 class ProductBase(SQLModel):
     name: str
-    type: ProductType = Field(sa_column=sa.Column(Enum(ProductType)),
-                              nullable=False)
+    type: ProductType = Field(sa_column=sa.Column(Enum(ProductType)), nullable=False)
     color: str = Field(nullable=False)
 
     @validator("color")
@@ -68,8 +67,7 @@ class Product(ProductBase, table=True):
         target_color = np.array(target_color.as_rgb_tuple())
         product_color = np.array(ImageColor.getrgb(self.color))
         rm = 0.5 * (target_color[0] + product_color[0])
-        return sum(
-            (2 + rm, 4, 3 - rm) * (target_color[:3] - product_color)**2)**0.5
+        return sum((2 + rm, 4, 3 - rm) * (target_color[:3] - product_color) ** 2) ** 0.5
 
     class Config:
         schema_extra = {
