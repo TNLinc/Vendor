@@ -43,25 +43,25 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Install dependencies
-      - run: |
+        run: |
           poetry install --no-interaction --no-root
 
       - name: Start test DB
-      - run: |
+        run: |
           docker compose up test_db
 
       - name: Wait for db
-      - run: |
+        run: |
           source .venv/bin/activate
           python tests/tests_pre_start.py
           deactivate
 
       - name: Run tests
-      - run: |
+        run: |
           source .venv/bin/activate
           pytest
           deactivate
 
       - name: Stor test DB
-      - run: |
+        run: |
           docker compose down test_db
