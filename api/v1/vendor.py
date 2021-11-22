@@ -1,7 +1,8 @@
-from typing import List
 import uuid
+from typing import List
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends
+from fastapi import HTTPException
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,7 +10,9 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from db import create_session
-from models import Vendor, VendorRead, VendorWithProducts
+from models import Vendor
+from models import VendorRead
+from models import VendorWithProducts
 
 router = InferringRouter()
 
