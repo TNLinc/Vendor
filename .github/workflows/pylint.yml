@@ -9,7 +9,7 @@ on:
 
 jobs:
   run:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       TEST_DB_NAME: vendor
       TEST_DB_USER: postgres
@@ -55,8 +55,7 @@ jobs:
         run: |
           source .venv/bin/activate
           mkdir -p pylint_reports
-          pytest --fixtures --collect-only .
-          pylint *
+          pylint * > pylint_reports/cv_pylint_checks.json || exit_code=`echo $?` || true
           pylint-json2html -o pylint_reports/pylint_checks.html ./pylint_reports/pylint_checks.json
           deactivate
           exit ${exit_code}
