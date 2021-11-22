@@ -5,6 +5,10 @@ restylers:
   - autopep8:
       enabled: false
   - black:
-      arguments: "--config pyproject.toml"
+      arguments:
+        - "--config"
+        - "pyproject.toml"
   - isort:
-      arguments: "--config pyproject.toml"
+      arguments:
+      - "--config"
+      - "pyproject.toml"
