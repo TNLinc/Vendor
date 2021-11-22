@@ -10,6 +10,14 @@ on:
 jobs:
   run:
     runs-on: macos-latest
+    env:
+      TEST_DB_NAME: vendor
+      TEST_DB_USER: postgres
+      TEST_DB_PASSWORD: test
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5444
+      VENDOR_DB_SCHEMA: vendor
+      ENV_FOR_DYNACONF: testing
     steps:
 
       - uses: actions/checkout@v2
