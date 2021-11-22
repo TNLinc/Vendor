@@ -24,9 +24,9 @@ class VendorAPI:
 
     @router.get("/vendors/{item_id}", response_model=VendorWithProducts)
     async def get_vendor(self, item_id: uuid.UUID):
-        vendor = await self.session.get(
-            Vendor, item_id, options=[joinedload(Vendor.products)]
-        )
+        vendor = await self.session.get(Vendor,
+                                        item_id,
+                                        options=[joinedload(Vendor.products)])
         if not vendor:
             raise HTTPException(status_code=404, detail="Vendor not found")
         return vendor

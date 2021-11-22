@@ -15,7 +15,6 @@ from models import Vendor
 
 settings.setenv("testing")
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
