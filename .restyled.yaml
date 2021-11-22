@@ -10,5 +10,5 @@ restylers:
         - "pyproject.toml"
   - isort:
       arguments:
-      - "--sp"
-      - "."
+        - "--sp"
+        - "."
