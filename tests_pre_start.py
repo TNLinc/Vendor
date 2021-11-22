@@ -3,7 +3,11 @@ import logging
 
 import nest_asyncio
 from sqlmodel import select
-from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
+from tenacity import after_log
+from tenacity import before_log
+from tenacity import retry
+from tenacity import stop_after_attempt
+from tenacity import wait_fixed
 
 from db import SessionBuilder
 from models import Vendor
