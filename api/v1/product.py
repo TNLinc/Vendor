@@ -29,9 +29,9 @@ class ProductAPI:
 
     @router.get("/products/{item_id}", response_model=ProductWithVendor)
     async def get_product(self, item_id: uuid.UUID):
-        product = await self.session.get(
-            Product, item_id, options=[joinedload(Product.vendor)]
-        )
+        product = await self.session.get(Product,
+                                         item_id,
+                                         options=[joinedload(Product.vendor)])
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
         return product
@@ -47,7 +47,9 @@ class ProductAPI:
         summary="Get products with limit and offset",
     )
     async def get_all_products(
-        self, color: Optional[Color] = Query(default=None, description="Sorted color")
+        self,
+        color: Optional[Color] = Query(default=None,
+                                       description="Sorted color")
     ) -> Any:
         products = await self.session.execute(select(Product))
         products = products.scalars().all()
