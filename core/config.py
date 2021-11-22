@@ -1,4 +1,3 @@
-from functools import lru_cache
 from pathlib import Path
 
 from dynaconf import Dynaconf
@@ -13,9 +12,5 @@ settings: LazySettings = Dynaconf(
     environments=True,
     load_dotenv=True,
     dotenv_path=BASE_DIR / ".env",
+    envvar_prefix=False,
 )
-
-
-@lru_cache
-def get_settings():
-    return settings

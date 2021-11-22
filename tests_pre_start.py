@@ -10,10 +10,10 @@ from tenacity import stop_after_attempt
 from tenacity import wait_fixed
 
 from core.config import settings
+settings.setenv("testing")
+
 from db import SessionBuilder
 from models import Vendor
-
-settings.setenv("testing")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
