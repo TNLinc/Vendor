@@ -37,6 +37,7 @@ tenacity = "^8.0.1"
 nest-asyncio = "^1.5.1"
 coverage = "^6.1.2"
 pylint-pytest = "1.1.2"
+autopep8 = "^1.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
