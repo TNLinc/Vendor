@@ -1,7 +1,8 @@
 from functools import lru_cache
 from pathlib import Path
 
-from dynaconf import Dynaconf, LazySettings
+from dynaconf import Dynaconf
+from dynaconf import LazySettings
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 

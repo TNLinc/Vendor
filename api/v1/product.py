@@ -1,9 +1,13 @@
-from typing import Any, Optional
 import uuid
+from typing import Any
+from typing import Optional
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends
+from fastapi import HTTPException
 from fastapi.params import Query
-from fastapi_pagination import LimitOffsetPage, Page, paginate
+from fastapi_pagination import LimitOffsetPage
+from fastapi_pagination import Page
+from fastapi_pagination import paginate
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from pydantic.color import Color
@@ -12,7 +16,9 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from db import create_session
-from models import Product, ProductRead, ProductWithVendor
+from models import Product
+from models import ProductRead
+from models import ProductWithVendor
 
 router = InferringRouter()
 
