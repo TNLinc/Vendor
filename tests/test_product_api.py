@@ -1,5 +1,5 @@
-from httpx import Response
 import pytest
+from httpx import Response
 
 
 @pytest.mark.asyncio
@@ -19,9 +19,12 @@ async def test_get_all_products(client, fill_product_data, jsonify):
                 "id": "694afe5d-5fdc-42c8-8a91-40fc2142a436",
             },
         ],
-        "total": 2,
-        "page": 1,
-        "size": 50,
+        "total":
+        2,
+        "page":
+        1,
+        "size":
+        50,
     }
     response: Response = await client.get("/api/vendor/v1/products/default/")
     assert response.status_code == 200
@@ -29,7 +32,8 @@ async def test_get_all_products(client, fill_product_data, jsonify):
 
 
 @pytest.mark.asyncio
-async def test_get_all_products_sort_by_color(client, fill_product_data, jsonify):
+async def test_get_all_products_sort_by_color(client, fill_product_data,
+                                              jsonify):
     expected = {
         "items": [
             {
@@ -45,13 +49,15 @@ async def test_get_all_products_sort_by_color(client, fill_product_data, jsonify
                 "id": "c40d6f3d-f617-4edb-adc7-ab67c0d643f7",
             },
         ],
-        "total": 2,
-        "page": 1,
-        "size": 50,
+        "total":
+        2,
+        "page":
+        1,
+        "size":
+        50,
     }
     response: Response = await client.get(
-        "/api/vendor/v1/products/default/?color=%23444444"
-    )
+        "/api/vendor/v1/products/default/?color=%23444444")
     assert response.status_code == 200
     assert response.read() == jsonify(expected)
 
@@ -70,7 +76,6 @@ async def test_get_product(client, fill_product_data, jsonify):
         },
     }
     response: Response = await client.get(
-        "/api/vendor/v1/products/c40d6f3d-f617-4edb-adc7-ab67c0d643f7"
-    )
+        "/api/vendor/v1/products/c40d6f3d-f617-4edb-adc7-ab67c0d643f7")
     assert response.status_code == 200
     assert response.read() == jsonify(expected)
