@@ -1,6 +1,7 @@
 enabled: true
 pull_requests: true
 restylers:
+  - "*"
   autopep8:
     enabled: false
   black:
