@@ -1,5 +1,3 @@
-from models import Vendor
-from db import SessionBuilder
 import asyncio
 import logging
 
@@ -8,6 +6,8 @@ from sqlmodel import select
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
 
 from core.config import settings
+from db import SessionBuilder
+from models import Vendor
 
 settings.setenv("testing")
 
