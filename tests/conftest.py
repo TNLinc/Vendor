@@ -1,15 +1,17 @@
 import json
 
+import pytest
 from dynaconf import settings
 from httpx import AsyncClient
-import pytest
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
 
 import db
 from main import app
-from models import Product, Vendor
-from tests.data import products, vendors
+from models import Product
+from models import Vendor
+from tests.data import products
+from tests.data import vendors
 
 
 @pytest.fixture
