@@ -1,9 +1,13 @@
-from typing import Any, Optional
 import uuid
+from typing import Any
+from typing import Optional
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends
+from fastapi import HTTPException
 from fastapi.params import Query
-from fastapi_pagination import LimitOffsetPage, Page, paginate
+from fastapi_pagination import LimitOffsetPage
+from fastapi_pagination import Page
+from fastapi_pagination import paginate
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from pydantic.color import Color
@@ -12,7 +16,9 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from db import create_session
-from models import Product, ProductRead, ProductWithVendor
+from models import Product
+from models import ProductRead
+from models import ProductWithVendor
 
 router = InferringRouter()
 
@@ -23,9 +29,9 @@ class ProductAPI:
 
     @router.get("/products/{item_id}", response_model=ProductWithVendor)
     async def get_product(self, item_id: uuid.UUID):
-        product = await self.session.get(
-            Product, item_id, options=[joinedload(Product.vendor)]
-        )
+        product = await self.session.get(Product,
+                                         item_id,
+                                         options=[joinedload(Product.vendor)])
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
         return product
@@ -41,7 +47,9 @@ class ProductAPI:
         summary="Get products with limit and offset",
     )
     async def get_all_products(
-        self, color: Optional[Color] = Query(default=None, description="Sorted color")
+        self,
+        color: Optional[Color] = Query(default=None,
+                                       description="Sorted color")
     ) -> Any:
         products = await self.session.execute(select(Product))
         products = products.scalars().all()
