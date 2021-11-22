@@ -47,7 +47,7 @@ jobs:
         run: |
           source .venv/bin/activate
           mkdir -p pylint_reports
-          pylint * > pylint_reports/pylint_checks.json || exit_code=`echo $?` || true
+          pylint *
           pylint-json2html -o pylint_reports/pylint_checks.html ./pylint_reports/pylint_checks.json
           deactivate
           exit ${exit_code}
