@@ -9,7 +9,7 @@ from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixe
 
 from core.config import settings
 
-settings.setenv('testing')
+settings.setenv("testing")
 
 
 logging.basicConfig(level=logging.INFO)
