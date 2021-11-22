@@ -17,6 +17,7 @@ jobs:
       TEST_DB_HOST: localhost
       TEST_DB_PORT: 5444
       VENDOR_DB_SCHEMA: vendor
+      ENV_FOR_DYNACONF: testing
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python

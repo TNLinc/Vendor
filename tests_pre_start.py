@@ -9,9 +9,6 @@ from tenacity import retry
 from tenacity import stop_after_attempt
 from tenacity import wait_fixed
 
-from core.config import settings
-settings.setenv("testing")
-
 from db import SessionBuilder
 from models import Vendor
 
