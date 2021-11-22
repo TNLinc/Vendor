@@ -48,7 +48,7 @@ jobs:
 
       - name: Start test DB
         run: |
-          docker compose up test_db
+          docker compose up -d test_db
 
       - name: Wait for db
         run: |
