@@ -13,7 +13,7 @@ services:
     volumes:
       - db_volume:/var/lib/comparing/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,7 +29,7 @@ services:
     ports:
       - "${TEST_DB_PORT}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${TEST_DB_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -37,25 +37,33 @@ services:
   vendor:
     build: .
     image: tnlinc/vendor
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
+      VENDOR_DB_SCHEMA: ${VENDOR_DB_SCHEMA}
+      VENDOR_PORT: ${VENDOR_PORT}
+
     depends_on:
       vendor_db:
         condition: service_healthy
     expose:
       - "8000"
-    env_file:
-      - .env
     networks:
       - main
     ports:
       - "${VENDOR_PORT}:8000"
     healthcheck:
-      test: ["CMD-SHELL", "bash scripts/fastApi_health_check.sh"]
+      test: [ "CMD-SHELL", "bash scripts/fastApi_health_check.sh" ]
       interval: 30s
       timeout: 30s
       retries: 5
 
 volumes:
-  db_volume: {}
+  db_volume: { }
 
 networks:
-  main: {}
+  main: { }
