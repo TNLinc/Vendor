@@ -3,8 +3,8 @@ pull_requests: true
 restylers:
   - "*"
   - autopep8:
-    enabled: false
+      enabled: false
   - black:
-    arguments: "--config pyproject.toml"
+      arguments: "--config pyproject.toml"
   - isort:
-    arguments: "--config pyproject.toml"
+      arguments: "--config pyproject.toml"
