@@ -10,27 +10,41 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      TEST_DB_NAME: vendor
+      TEST_DB_USER: postgres
+      TEST_DB_PASSWORD: test
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5444
+      VENDOR_DB_SCHEMA: vendor
+      ENV_FOR_DYNACONF: testing
     steps:
-      #----------------------------------------------
-      #       check-out repo and set-up python
-      #----------------------------------------------
+
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+
+      - name: Set up Python 3.9.8
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
-      #----------------------------------------------
-      #  -----  install & configure poetry  -----
-      #----------------------------------------------
+          python-version: 3.9.8
+
+      - name: Load cached Poetry installation
+        uses: actions/cache@v2
+        with:
+          path: ~/.local
+          key: poetry-0
+
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-      #----------------------------------------------
-      # install dependencies
-      #----------------------------------------------
+
+      - uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ hashFiles('pyproject.toml') }}
+
       - name: Install dependencies
         run: |
           poetry install --no-interaction --no-root
@@ -41,8 +55,8 @@ jobs:
         run: |
           source .venv/bin/activate
           mkdir -p pylint_reports
-          pylint * > pylint_reports/cv_pylint_checks.json || exit_code=`echo $?` || true
-          pylint-json2html -o pylint_reports/cv_pylint_checks.html ./pylint_reports/cv_pylint_checks.json
+          pylint * > pylint_reports/pylint_checks.json || exit_code=`echo $?` || true
+          pylint-json2html -o pylint_reports/pylint_checks.html ./pylint_reports/pylint_checks.json
           deactivate
           exit ${exit_code}
       #----------------------------------------------

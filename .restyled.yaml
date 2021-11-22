@@ -1,0 +1,19 @@
+enabled: true
+pull_requests: true
+statuses:
+  differences: true     # Red when style differences are found
+  no_differences: true  # Green when no differences are found
+  error: true
+restylers_version: stable
+restylers:
+  - "*"
+  - autopep8:
+      enabled: false
+  - black:
+      arguments:
+        - "--config"
+        - "pyproject.toml"
+  - isort:
+      arguments:
+        - "--sp"
+        - "."
