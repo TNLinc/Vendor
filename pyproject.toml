@@ -48,7 +48,7 @@ based_on_style = "pep8"
 [tool.pylint.'MASTER']
 ignore = ".venv, Dockerfile, docker-compose.yml, Procfile, README.md, poetry.lock, pyproject.toml"
 load-plugins = [
-    "pylint_pytest",
+    "pylint_pytest"
 ]
 
 [tool.pylint.'REPORTS']
