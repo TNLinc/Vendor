@@ -13,7 +13,7 @@ async def test_get_all_products(client, fill_product_data, jsonify):
                 "id": "c40d6f3d-f617-4edb-adc7-ab67c0d643f7",
             },
             {
-                "name": "Wonderful cream",
+                "name": "Wonderful creamm",
                 "type": 1,
                 "color": "#444444",
                 "id": "694afe5d-5fdc-42c8-8a91-40fc2142a436",
