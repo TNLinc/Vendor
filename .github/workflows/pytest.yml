@@ -61,3 +61,7 @@ jobs:
           source .venv/bin/activate
           pytest
           deactivate
+
+      - name: Stor test DB
+      - run: |
+          docker compose down test_db
