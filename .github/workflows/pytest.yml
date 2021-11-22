@@ -43,7 +43,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Install dependencies
-        run: |
+      - run: |
           poetry install --no-interaction --no-root
 
       - name: Start test DB
