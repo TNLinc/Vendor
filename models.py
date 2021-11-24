@@ -1,12 +1,13 @@
 import enum
-from typing import List, Optional
 import uuid
+from math import sqrt
+from typing import List, Optional
 
-from PIL import ImageColor
 import numpy as np
+import sqlalchemy as sa
+from PIL import ImageColor
 from pydantic import validator
 from pydantic.color import Color
-import sqlalchemy as sa
 from sqlalchemy import Enum
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -64,7 +65,7 @@ class Product(ProductBase, table=True):
         target_color = np.array(target_color.as_rgb_tuple())
         product_color = np.array(ImageColor.getrgb(self.color))
         rm = 0.5 * (target_color[0] + product_color[0])
-        return sum((2 + rm, 4, 3 - rm) * (target_color[:3] - product_color) ** 2) ** 0.5
+        return sqrt(sum((2 + rm / 256, 4, 2 + (255 - rm) / 256) * (target_color[:3] - product_color) ** 2))
 
     class Config:
         schema_extra = {
