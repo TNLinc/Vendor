@@ -9,8 +9,8 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 import uvicorn
 
 from api.v1 import product, vendor
-from core import loger, settings
-from core.settings import VENDOR_ALLOWED_HOSTS
+from core import loger
+from core.config import settings
 import db
 
 description = """
@@ -67,18 +67,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.on_event("startup")
-async def startup():
-    await db.start_db(settings.DB_URL)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
 
-@app.on_event("shutdown")
-async def shutdown():
-    await db.close_db()
-
-
-def is_database_online(session: bool = Depends(db.get_db)):
+def is_database_online(session: bool = Depends(db.SessionBuilder)):
     return session
 
 
@@ -86,15 +78,13 @@ app.include_router(vendor.router, prefix="/api/vendor/v1", tags=["vendors"])
 app.include_router(product.router, prefix="/api/vendor/v1", tags=["products"])
 app.add_api_route("/health", health([is_database_online]))
 
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=VENDOR_ALLOWED_HOSTS)
-
 add_pagination(app)
 
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="127.0.0.1",
-        port=8000,
+        port=settings.PORT,
         log_config=loger.LOGGING,
         log_level=logging.DEBUG,
     )

@@ -11,9 +11,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      CV_SECRET_KEY: some-secret-string
-      CV_DEBUG: TRUE
-      CV_ALLOWED_HOSTS: '*'
+      TEST_DB_NAME: vendor
+      TEST_DB_USER: postgres
+      TEST_DB_PASSWORD: test
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5444
+      VENDOR_DB_SCHEMA: vendor
+      ENV_FOR_DYNACONF: testing
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -38,19 +42,27 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      #----------------------------------------------
-      # install dependencies
-      #----------------------------------------------
+
       - name: Install dependencies
         run: |
           poetry install --no-interaction --no-root
 
-      - name: Run prebuild scripts
+      - name: Start test DB
         run: |
-          bash tests/scripts/test-entrypoin.sh
+          docker compose up -d test_db
+
+      - name: Wait for db
+        run: |
+          source .venv/bin/activate
+          python tests_pre_start.py
+          deactivate
 
       - name: Run tests
         run: |
           source .venv/bin/activate
           pytest
           deactivate
+
+      - name: Stor test DB
+        run: |
+          docker compose down test_db

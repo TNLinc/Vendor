@@ -1,0 +1,40 @@
+default:
+  PROJECT_NAME: Vendor
+  DEBUG: true
+  PORT: 8000
+  DB_NAME: "@format {env[DB_NAME]}"
+  DB_SCHEMA: "@format {env[VENDOR_DB_SCHEMA]}"
+  DB_USER: "@format {env[DB_USER]}"
+  DB_PASSWORD: "@format {env[DB_PASSWORD]}"
+  DB_HOST: "@format {env[DB_HOST]}"
+  DB_PORT: "@format {env[DB_PORT]}"
+  DB_URL: "@format postgresql+asyncpg://{this.DB_USER}:{this.DB_PASSWORD}@{this.DB_HOST}:{this.DB_PORT}/{this.DB_NAME}"
+
+development:
+  DEBUG: true
+  ALLOWED_HOSTS:
+    - "*"
+
+testing:
+  DEBUG: true
+  ALLOWED_HOSTS:
+    - "*"
+  DB_NAME: "@format {env[TEST_DB_NAME]}"
+  DB_SCHEMA: "@format {env[VENDOR_DB_SCHEMA]}"
+  DB_USER: "@format {env[TEST_DB_USER]}"
+  DB_PASSWORD: "@format {env[TEST_DB_PASSWORD]}"
+  DB_HOST: "@format {env[TEST_DB_HOST]}"
+  DB_PORT: "@format {env[TEST_DB_PORT]}"
+  DB_URL: "@format postgresql+asyncpg://{this.DB_USER}:{this.DB_PASSWORD}@{this.DB_HOST}:{this.DB_PORT}/{this.DB_NAME}"
+
+production:
+  DEBUG: false
+  ALLOWED_HOSTS:
+    - "*"
+  DB_NAME: "@format {env[PROD_DB_NAME]}"
+  DB_SCHEMA: "@format {env[VENDOR_DB_SCHEMA]}"
+  DB_USER: "@format {env[PROD_DB_USER]}"
+  DB_PASSWORD: "@format {env[PROD_DB_PASSWORD]}"
+  DB_HOST: "@format {env[PROD_DB_HOST]}"
+  DB_PORT: "@format {env[PROD_DB_PORT]}"
+  DB_URL: "@format postgresql+asyncpg://{this.DB_USER}:{this.DB_PASSWORD}@{this.DB_HOST}:{this.DB_PORT}/{this.DB_NAME}"

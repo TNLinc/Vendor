@@ -1,4 +1,5 @@
 import enum
+from math import sqrt
 from typing import List, Optional
 import uuid
 
@@ -10,7 +11,7 @@ import sqlalchemy as sa
 from sqlalchemy import Enum
 from sqlmodel import Field, Relationship, SQLModel
 
-from core import settings
+from core.config import settings
 
 
 class VendorBase(SQLModel):
@@ -22,7 +23,7 @@ class Vendor(VendorBase, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
     products: List["Product"] = Relationship(back_populates="vendor")
 
-    __table_args__ = {"schema": settings.VENDOR_DB_SCHEMA}
+    __table_args__ = {"schema": settings.DB_SCHEMA}
 
     class Config:
         schema_extra = {
@@ -58,13 +59,18 @@ class Product(ProductBase, table=True):
     vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
     vendor: Vendor = Relationship(back_populates="products")
 
-    __table_args__ = {"schema": settings.VENDOR_DB_SCHEMA}
+    __table_args__ = {"schema": settings.DB_SCHEMA}
 
     def get_distance(self, target_color: Color):
         target_color = np.array(target_color.as_rgb_tuple())
         product_color = np.array(ImageColor.getrgb(self.color))
         rm = 0.5 * (target_color[0] + product_color[0])
-        return sum((2 + rm, 4, 3 - rm) * (target_color[:3] - product_color) ** 2) ** 0.5
+        return sqrt(
+            sum(
+                (2 + rm / 256, 4, 2 + (255 - rm) / 256)
+                * (target_color[:3] - product_color) ** 2
+            )
+        )
 
     class Config:
         schema_extra = {

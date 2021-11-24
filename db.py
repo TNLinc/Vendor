@@ -1,21 +1,18 @@
-from typing import Optional
+from typing import Generator
 
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-engine: Optional[AsyncEngine] = None
+from core.config import settings
 
-
-async def start_db(db_url: str):
-    global engine  # pylint: disable=global-statement
-    engine = create_async_engine(db_url)
-
-
-async def close_db():
-    global engine  # pylint: disable=global-variable-not-assigned
-    if engine:
-        await engine.dispose()
+engine: AsyncEngine = create_async_engine(settings.DB_URL)
+SessionBuilder = sessionmaker(autocommit=False, bind=engine, class_=AsyncSession)
 
 
-async def get_db() -> AsyncSession:
-    async with AsyncSession(engine) as session:
-        yield session
+async def create_session() -> Generator:
+    try:
+        new_session = SessionBuilder()
+        yield new_session
+    finally:
+        await new_session.close()
