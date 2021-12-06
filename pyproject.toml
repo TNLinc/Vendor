@@ -65,7 +65,8 @@ disable = [
     "no-member",
     "no-name-in-module",
     "no-self-argument",
-    "no-self-use"
+    "no-self-use",
+    "duplicate-code"
 ]
 
 [tool.isort]

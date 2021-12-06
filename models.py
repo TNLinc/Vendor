@@ -22,6 +22,7 @@ class VendorBase(SQLModel):
 class Vendor(VendorBase, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
     products: List["Product"] = Relationship(back_populates="vendor")
+    colors: List["VendorColor"] = Relationship(back_populates="vendor")
 
     __table_args__ = {"schema": settings.DB_SCHEMA}
 
@@ -39,14 +40,22 @@ class VendorRead(VendorBase):
     id: Optional[uuid.UUID]
 
 
-class ProductType(enum.Enum):
-    TONAL_CREAM = 1
-
-
-class ProductBase(SQLModel):
+class VendorColorBase(SQLModel):
+    id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
     name: str
-    type: ProductType = Field(sa_column=sa.Column(Enum(ProductType)), nullable=False)
     color: str = Field(nullable=False)
+
+
+class VendorColor(VendorColorBase, table=True):
+    id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
+    name: str
+    color: str = Field(nullable=False)
+    vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
+    vendor: Vendor = Relationship(back_populates="colors")
+    products: List["Product"] = Relationship(back_populates="color")
+
+    __tablename__ = "vendor_color"
+    __table_args__ = {"schema": settings.DB_SCHEMA}
 
     @validator("color")
     def validate_color(cls, v):
@@ -54,16 +63,28 @@ class ProductBase(SQLModel):
         return v
 
 
+class ProductType(enum.Enum):
+    TONAL_CREAM = 1
+
+
+class ProductBase(SQLModel):
+    name: str
+    type: ProductType = Field(sa_column=sa.Column(Enum(ProductType)), nullable=False)
+    url: str
+
+
 class Product(ProductBase, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4(), primary_key=True)
     vendor_id: uuid.UUID = Field(foreign_key="vendor.vendor.id")
     vendor: Vendor = Relationship(back_populates="products")
+    color_id: uuid.UUID = Field(foreign_key="vendor.vendor_color.id")
+    color: VendorColor = Relationship(back_populates="products")
 
     __table_args__ = {"schema": settings.DB_SCHEMA}
 
     def get_distance(self, target_color: Color):
         target_color = np.array(target_color.as_rgb_tuple())
-        product_color = np.array(ImageColor.getrgb(self.color))
+        product_color = np.array(ImageColor.getrgb(self.color.color))
         rm = 0.5 * (target_color[0] + product_color[0])
         return sqrt(
             sum(
@@ -86,6 +107,8 @@ class Product(ProductBase, table=True):
 
 class ProductRead(ProductBase):
     id: Optional[uuid.UUID]
+    url: str
+    color: VendorColorBase
 
 
 class VendorWithProducts(VendorRead):

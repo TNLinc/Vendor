@@ -1,5 +1,5 @@
-from typing import List
 import uuid
+from typing import List
 
 from fastapi import Depends, HTTPException
 from fastapi_utils.cbv import cbv
@@ -21,7 +21,9 @@ class VendorAPI:
     @router.get("/vendors/{item_id}", response_model=VendorWithProducts)
     async def get_vendor(self, item_id: uuid.UUID):
         vendor = await self.session.get(
-            Vendor, item_id, options=[joinedload(Vendor.products)]
+            Vendor,
+            item_id,
+            options=[joinedload(Vendor.products), joinedload(Vendor.colors)],
         )
         if not vendor:
             raise HTTPException(status_code=404, detail="Vendor not found")
