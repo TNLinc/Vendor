@@ -31,8 +31,13 @@ async def test_get_vendor(client, fill_product_data, jsonify):
             {
                 "name": "Amazing cream",
                 "type": 1,
-                "color": "#666666",
+                "url": "https://www.letu.ru/Amazing%20cream",
                 "id": "c40d6f3d-f617-4edb-adc7-ab67c0d643f7",
+                "color": {
+                    "id": "85e6df48-a150-4be1-ba0b-9f6cef0f50d1",
+                    "name": "Green",
+                    "color": "#B8E981",
+                },
             }
         ],
     }
