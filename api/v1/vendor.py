@@ -1,5 +1,5 @@
-import uuid
 from typing import List
+import uuid
 
 from fastapi import Depends, HTTPException
 from fastapi_utils.cbv import cbv
