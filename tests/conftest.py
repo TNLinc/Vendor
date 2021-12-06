@@ -7,8 +7,8 @@ from sqlalchemy.exc import IntegrityError
 
 import db
 from main import app
-from models import Product, Vendor
-from tests.data import products, vendors
+from models import Product, Vendor, VendorColor
+from tests.data import products, vendor_colors, vendors
 
 
 @pytest.fixture
@@ -58,7 +58,24 @@ async def fill_vendor_data(session):
 
 
 @pytest.fixture
-async def fill_product_data(fill_vendor_data, session):
+async def fill_vendor_color_data(fill_vendor_data, session):
+    for color in vendor_colors:
+        session.add(VendorColor(**color))
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        print("Data already exists! Pass creation.")
+
+    yield
+
+    statement = delete(VendorColor)
+    await session.execute(statement)
+    await session.commit()
+
+
+@pytest.fixture
+async def fill_product_data(fill_vendor_color_data, session):
     for product in products:
         session.add(Product(**product))
     try:
