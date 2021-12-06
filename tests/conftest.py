@@ -1,14 +1,18 @@
 import json
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
 
 import db
 from main import app
-from models import Product, Vendor, VendorColor
-from tests.data import products, vendor_colors, vendors
+from models import Product
+from models import Vendor
+from models import VendorColor
+from tests.data import products
+from tests.data import vendor_colors
+from tests.data import vendors
 
 
 @pytest.fixture

@@ -1,15 +1,18 @@
 import enum
-from math import sqrt
-from typing import List, Optional
 import uuid
+from math import sqrt
+from typing import List
+from typing import Optional
 
-from PIL import ImageColor
 import numpy as np
+import sqlalchemy as sa
+from PIL import ImageColor
 from pydantic import validator
 from pydantic.color import Color
-import sqlalchemy as sa
 from sqlalchemy import Enum
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field
+from sqlmodel import Relationship
+from sqlmodel import SQLModel
 
 from core.config import settings
 
