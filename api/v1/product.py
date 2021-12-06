@@ -32,7 +32,8 @@ class ProductAPI:
         product = await self.session.get(
             Product,
             item_id,
-            options=[joinedload(Product.vendor), joinedload(Product.color)],
+            options=[joinedload(Product.vendor),
+                     joinedload(Product.color)],
         )
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
@@ -49,11 +50,12 @@ class ProductAPI:
         summary="Get products with limit and offset",
     )
     async def get_all_products(
-        self, color: Optional[Color] = Query(default=None, description="Sorted color")
+        self,
+        color: Optional[Color] = Query(default=None,
+                                       description="Sorted color")
     ) -> Any:
         products = await self.session.execute(
-            select(Product).options(joinedload(Product.color))
-        )
+            select(Product).options(joinedload(Product.color)))
         products = products.scalars().all()
         if not color:
             return paginate(products)

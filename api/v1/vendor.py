@@ -26,7 +26,8 @@ class VendorAPI:
         vendor = await self.session.get(
             Vendor,
             item_id,
-            options=[joinedload(Vendor.products), joinedload(Vendor.colors)],
+            options=[joinedload(Vendor.products),
+                     joinedload(Vendor.colors)],
         )
         if not vendor:
             raise HTTPException(status_code=404, detail="Vendor not found")

@@ -17,9 +17,9 @@ from tests.data import vendors
 
 @pytest.fixture
 async def client():
-    async with AsyncClient(
-        app=app, base_url="http://", headers={"host": "localhost"}
-    ) as ac:
+    async with AsyncClient(app=app,
+                           base_url="http://",
+                           headers={"host": "localhost"}) as ac:
         yield ac
 
 
