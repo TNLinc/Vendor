@@ -16,7 +16,7 @@ jobs:
       DB_PASSWORD: test
       DB_HOST: localhost
       DB_PORT: 5444
-      VENDOR_DB_SCHEMA: vendor
+      DB_SCHEMA: vendor
       ENV_FOR_DYNACONF: testing
     steps:
       #----------------------------------------------

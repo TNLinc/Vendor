@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   vendor_db:
-    image: tnlinc/db
+    image: tnlinc/db:latest
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -20,7 +20,7 @@ services:
 
   vendor:
     build: .
-    image: tnlinc/vendor
+    image: tnlinc/vendor:latest
     environment:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
