@@ -16,6 +16,7 @@ jobs:
       DB_PASSWORD: test
       DB_HOST: localhost
       DB_PORT: 5444
+      DB_URL: postgresql+asyncpg://postgres:test@localhost:5444/vendor
       VENDOR_DB_SCHEMA: vendor
       ENV_FOR_DYNACONF: testing
     steps:
