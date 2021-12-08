@@ -41,8 +41,8 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
+      DB_HOST: vendor_db
+      DB_PORT: 5432
 
       VENDOR_DB_SCHEMA: ${VENDOR_DB_SCHEMA}
       VENDOR_PORT: ${VENDOR_PORT}
@@ -50,6 +50,8 @@ services:
     depends_on:
       vendor_db:
         condition: service_healthy
+      logstash:
+        condition: service_started
     expose:
       - "8000"
     networks:
@@ -62,8 +64,53 @@ services:
       timeout: 30s
       retries: 5
 
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.16.0
+    environment:
+      ES_HOST: "elasticsearch"
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    ports:
+      - "${LOGSTASH_PORT}:5044/udp"
+    volumes:
+      - ./deploy/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - main
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.0
+    environment:
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - ${ES_PORT}:9200
+      - "9300:9300"
+    volumes:
+      - es_volume:/usr/share/elasticsearch/data
+    healthcheck:
+      test: curl -u elastic:elastic -s -f elasticsearch:9200/_cat/health >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - main
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.0
+    ports:
+      - "${KIBANA_PORT}:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - main
+
 volumes:
   db_volume: {}
+  es_volume: {}
 
 networks:
   main: {}

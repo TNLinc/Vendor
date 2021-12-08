@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Optional
 import uuid
 
@@ -15,6 +16,7 @@ from db import create_session
 from models import Product, ProductRead, ProductWithVendor
 
 router = InferringRouter()
+log = logging.getLogger("fastapi.request")
 
 
 @cbv(router)
@@ -23,13 +25,18 @@ class ProductAPI:
 
     @router.get("/products/{item_id}", response_model=ProductWithVendor)
     async def get_product(self, item_id: uuid.UUID):
+        log.debug("Start processing get_product request with id: %s", item_id)
         product = await self.session.get(
             Product,
             item_id,
             options=[joinedload(Product.vendor), joinedload(Product.color)],
         )
+
         if not product:
+            log.debug("Product with id: %s not found", item_id)
             raise HTTPException(status_code=404, detail="Product not found")
+
+        log.debug("Found product with id: %s name: %s", item_id, product.name)
         return product
 
     @router.get(
@@ -45,10 +52,15 @@ class ProductAPI:
     async def get_all_products(
         self, color: Optional[Color] = Query(default=None, description="Sorted color")
     ) -> Any:
+        log.debug("Start processing get_all_products request")
         products = await self.session.execute(
             select(Product).options(joinedload(Product.color))
         )
         products = products.scalars().all()
+
         if not color:
+            log.debug("Color not specified")
             return paginate(products)
+
+        log.debug("Sort with color: %s", color.as_hex())
         return paginate(sorted(products, key=lambda x: x.get_distance(color)))

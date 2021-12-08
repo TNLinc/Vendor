@@ -21,6 +21,8 @@ Pillow = "^8.4.0"
 fastapi-pagination = "^0.9.1"
 numpy = "^1.21.4"
 dynaconf = "^3.1.7"
+python-json-logger = "^2.0.2"
+python-logstash-async = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.11.1"
@@ -66,7 +68,8 @@ disable = [
     "no-name-in-module",
     "no-self-argument",
     "no-self-use",
-    "duplicate-code"
+    "duplicate-code",
+    "line-too-long"
 ]
 
 [tool.isort]
@@ -78,7 +81,7 @@ combine_as_imports = true
 max-line-length = 120
 format = "html"
 htmldir = "flake-report"
-exclude = ".venv"
+exclude = ".venv, core/loger.py, Dockerfile, Procfile, README.md, docker-compose.yml, poetry.lock, pyproject.toml"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
