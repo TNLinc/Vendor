@@ -9,5 +9,4 @@ settings: LazySettings = Dynaconf(
     environments=True,
     dotenv_path=BASE_DIR / ".env",
     envvar_prefix=False,
-    ignore_unknown_envvars=True,
 )

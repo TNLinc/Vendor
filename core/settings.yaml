@@ -4,6 +4,7 @@ default:
   PORT: 8000
   ALLOWED_HOSTS:
     - "*"
+  DB_URL: "@format postgresql+asyncpg://{this.DB_USER}:{this.DB_PASSWORD}@{this.DB_HOST}:{this.DB_PORT}/{this.DB_NAME}"
 
 development:
 

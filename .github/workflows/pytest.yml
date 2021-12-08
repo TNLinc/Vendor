@@ -18,7 +18,6 @@ jobs:
       DB_PORT: 5444
       VENDOR_DB_SCHEMA: vendor
       ENV_FOR_DYNACONF: testing
-      DB_URL: postgresql+asyncpg://postgres:test@localhost:5444/vendor
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
