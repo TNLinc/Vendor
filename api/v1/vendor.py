@@ -44,4 +44,4 @@ class VendorAPI:
         vendors = result.scalars().all()
 
         log.debug("Loaded %s vendors", len(vendors))
-        return result.scalars().all()
+        return vendors

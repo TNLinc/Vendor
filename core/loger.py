@@ -1,3 +1,5 @@
+import tempfile
+
 from logstash_async.constants import constants
 
 from core.config import settings
@@ -66,7 +68,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "default",
-            "filename": "/tmp/vendor.log",
+            "filename": f"{tempfile.mkdtemp(prefix='vendor.', suffix='.logs')}/vendor.log",
             "mode": "a",
             "maxBytes": 10485760,
             "backupCount": 5,
