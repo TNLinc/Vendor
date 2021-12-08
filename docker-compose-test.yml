@@ -1,6 +1,6 @@
 services:
   test_db:
-    image: tnlinc/db
+    image: tnlinc/db:latest
     environment:
       POSTGRES_DB: vendor
       POSTGRES_USER: postgres
