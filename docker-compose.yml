@@ -18,22 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  test_db:
-    image: tnlinc/db
-    environment:
-      POSTGRES_DB: ${TEST_DB_NAME}
-      POSTGRES_USER: ${TEST_DB_USER}
-      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
-    networks:
-      - main
-    ports:
-      - "${TEST_DB_PORT}:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   vendor:
     build: .
     image: tnlinc/vendor
