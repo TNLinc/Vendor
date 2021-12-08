@@ -71,6 +71,6 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
 
-      - name: Stor test DB
+      - name: Stop test DB
         run: |
-          docker compose down test_db
+          docker compose -f docker-compose-test.yml down test_db
