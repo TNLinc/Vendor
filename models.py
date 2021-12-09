@@ -89,7 +89,7 @@ class Product(ProductBase, table=True):
         return sqrt(
             sum(
                 (2 + rm / 256, 4, 2 + (255 - rm) / 256)
-                * (target_color[:3] - product_color) ** 2
+                * (target_color[:3] - product_color[:3]) ** 2
             )
         )
 
