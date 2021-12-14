@@ -1,8 +1,20 @@
+import logging
 import tempfile
 
 from logstash_async.constants import constants
 
 from core.config import settings
+
+
+class DefaultFilter(logging.Filter):
+    def __init__(self, param=None):
+        super().__init__()
+        self.param = param
+
+    def filter(self, record):
+        record.tags = settings.PROJECT_NAME
+        return True
+
 
 constants.ERROR_LOG_RATE_LIMIT = "2 per hour"
 
@@ -36,6 +48,7 @@ LOGGING = {
             "()": "pythonjsonlogger.jsonlogger.JsonFormatter",  # The class to instantiate!
             # Json is more complex, but easier to read, display all attributes!
             "format": """
+                    tags: %(tags)l
                     asctime: %(asctime)s
                     created: %(created)f
                     filename: %(filename)s
@@ -57,6 +70,11 @@ LOGGING = {
                 """,
             "datefmt": "%Y-%m-%d %H:%M:%S",  # How to display dates
         },
+    },
+    "filters": {
+        "tagsDefault": {
+            "()": "core.loger.DefaultFilter",
+        }
     },
     "handlers": {
         "console": {
@@ -82,9 +100,7 @@ LOGGING = {
             "version": 1,
             "transport": "logstash_async.transport.UdpTransport",
             # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
-            "message_type": "logstash",  # 'type' field in logstash message. Default value: 'logstash'.
-            "fqdn": False,  # Fully qualified domain name. Default value: false.
-            "tags": ["vendor"],  # list of tags
+            "filters": ["tagsDefault"],
             "database_path": "",
         },
     },
