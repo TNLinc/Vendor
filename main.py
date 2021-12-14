@@ -68,7 +68,7 @@ app.add_middleware(
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
 
-def is_database_online(session: bool = Depends(db.SessionBuilder)):
+def is_database_online(session: bool = Depends(db.create_session)):
     return session
 
 

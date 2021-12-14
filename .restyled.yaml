@@ -11,7 +11,8 @@ restylers:
       enabled: false
   - black:
       arguments:
-        - "--deploy"
+        - "--check"
+        - "--config"
         - "pyproject.toml"
   - isort:
       arguments:
