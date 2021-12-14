@@ -9,6 +9,8 @@ restylers:
   - "*"
   - autopep8:
       enabled: false
+  - yarp:
+      enabled: false
   - black:
       arguments:
         - "--check"
