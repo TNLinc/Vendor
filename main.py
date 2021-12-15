@@ -11,8 +11,8 @@ import uvicorn
 from api.v1 import product, vendor
 from core import loger
 from core.config import settings
-import db
 from core.loger import LOGGING
+import db
 
 description = """
 Vendor API helps you do awesome stuff. 🚀
