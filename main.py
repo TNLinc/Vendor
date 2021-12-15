@@ -1,3 +1,5 @@
+from logging.config import dictConfig
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
@@ -10,6 +12,7 @@ from api.v1 import product, vendor
 from core import loger
 from core.config import settings
 import db
+from core.loger import LOGGING
 
 description = """
 Vendor API helps you do awesome stuff. 🚀
@@ -77,6 +80,8 @@ app.include_router(product.router, prefix="/api/vendor/v1", tags=["products"])
 app.add_api_route("/health", health([is_database_online]))
 
 add_pagination(app)
+
+dictConfig(LOGGING)
 
 if __name__ == "__main__":
     uvicorn.run(

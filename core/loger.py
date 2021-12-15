@@ -107,7 +107,7 @@ LOGGING = {
     "loggers": {
         # "db": {"level": "DEBUG", "handlers": ["console"]},
         # "fastapi.request": {"level": "DEBUG", "handlers": ["console"]},
-        # "sqlalchemy.engine": {"level": "INFO", "handlers": ["console"]},
+        "sqlalchemy.engine": {"level": "INFO", "propagate": 1},
+        "": {"level": "DEBUG", "handlers": ["console", "file", "logstash"]},
     },
-    "root": {"level": "DEBUG", "handlers": ["console", "file", "logstash"]},
 }
